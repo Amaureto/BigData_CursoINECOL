@@ -1,0 +1,46 @@
+---
+title: "FUNCIONES BÁSICAS DE UTILIDAD EN BIOACÚSTICA"
+author: "Amauri Sarmiento-Rojas"
+date: "23 de febrero de 2019"
+output: html_document
+---
+
+***
+
+# Activación de paquetes
+```{r echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
+### Cargamos paquete "seewave" para análisis y síntesis de sonido
+if (!require("seewave")) install.packages("seewave"); library("seewave")
+
+### "ggplot2" para visualización de datos y gráficos
+if (!require("ggplot2")) install.packages("ggplot2"); library("ggplot2")
+
+### "tuneR" para trabajar con archivos Wave
+if (!require("tuneR")) install.packages("tuneR"); library("tuneR")
+
+```
+
+***
+
+# Leer archivos de audio
+```{r}
+SONIDO <- readWave(filename = "D_Arenicolor.wav")
+SONIDO #visualizamos propiedades del objeto que contiene el archivo tipo wav
+```
+
+# Extraer una sección de sonido
+```{r}
+SONIDO_2 <- extractWave(SONIDO, from = 0, to = 50, xunit = "time") #extraer los primeros 60 segundos y guardarlo en un objeto
+SONIDO_2
+
+```
+
+
+#### Generar espectrograma
+```{r, results='hide'}
+ESPECTROGRAMA_SONIDO <- spectro(SONIDO, wl=512, wn="hanning", f=48000, tlab = "Tiempo (s)", flab = "Frecuencia (kHz)", flim=c(0, 5), scalelab = "Amplitud (dB)", ovlp=50, tlim=c(0, 50), osc=TRUE) #crea un espectrograma del objeto indicado, indicando el tamaño de ventana (wl), el tipo de ventana (wn), la frecuencia o tasa de muestreo (f), el nombre del eje del tiempo (tlab), la etiqueta del eje de frecuencia (flab), los límites de ambos ejes (flim/tlim), la etiqueta del eje de amplitud (scalelab), el overlapping (ovlp), (osc) indica que también se presente el oscilograma.
+
+ESPECTROGRAMA_SONIDO #visualizamos espectrograma
+
+# para que abra el sonido en un programa de reproducción de audio usar: listen=TRUE
+```
